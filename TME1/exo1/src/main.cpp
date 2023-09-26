@@ -6,7 +6,10 @@
 int main () {
 
 	std::string abc = "abc";
-	char * str = new char [3];
+	// FAUTE: le tableau de char str nécessite un espace pour le terminateur null
+	// char * str = new char[3];
+	char * str = new char[4];
+	str[3] = '\0'; // Mettre le terminateur null
 	str[0] = 'a';
 	str[1] = 'b';
 	str[2] = 'c';
@@ -18,21 +21,22 @@ int main () {
 
 	pr::List list;
 	list.push_front(abc);
-	list.push_front(abc);
 
 	std::cout << "Liste : " << list << std::endl;
 	std::cout << "Taille : " << list.size() << std::endl;
 
-	// Affiche à l'envers
-	for (i= list.size() - 1 ; i >= 0 ; i--) {
+	// FAUTE: Boucle infinie due à un débordement d'entier non signé
+	// for (i = list.size() - 1; i >= 0; i--)
+	for (i = list.size(); i-- > 0; ){
 		std::cout << "elt " << i << ": " << list[i] << std::endl;
 	}
 
-	// liberer les char de la chaine
-	for (char *cp = str ; *cp ; cp++) {
-		delete cp;
-	}
-	// et la chaine elle meme
-	delete str;
+	// FAUTE: Suppression des caractères individuels dans un tableau de char
+	// for (char *cp = str; *cp; cp++) {
+	//     delete cp;
+	// }
+	// La bonne façon de supprimer le tableau :
+	delete[] str;
+
 
 }

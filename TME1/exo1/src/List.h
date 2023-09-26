@@ -24,22 +24,30 @@ public:
 	List(): tete(nullptr)  {}
 
 	~List() {
-		for (Chainon * c = tete ; c ; ) {
-			Chainon * tmp = c->next;
-			delete c;
-			c = tmp;
-		}
+	    for (Chainon *c = tete; c;) {
+	        Chainon *tmp = c->next;
+	        delete c;
+	        c = tmp;
+	    }
+	    tete = nullptr;  //FAUTE: Pointeur suspendu. Le définir à nullptr.
 	}
+
 
 	const std::string & operator[] (size_t index) const ;
 
 	void push_back (const std::string& val) ;
 
-	void push_front (const std::string& val) {
-		tete = new Chainon(val,tete);
-	}
+	// FAUTE: Double définition de push_front
+	// void push_front(const std::string& val) {
+	//     tete = new Chainon(val, tete);
+	// }
+	// Retirez-en une.
 
-	bool empty() ;
+	void push_front(const std::string& val);
+
+	// FAUTE: Type de retour manquant pour la fonction empty
+	// bool empty();
+	bool empty() const;
 
 	size_t size() const ;
 };

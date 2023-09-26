@@ -1,3 +1,6 @@
+#include "List.h"
+#include <iostream>
+#include <string>
 
 namespace pr {
 
@@ -9,15 +12,19 @@ size_t Chainon::length() {
 	if (next != nullptr) {
 		len += next->length();
 	}
-	return length();
+	// FAUTE : Récurssion infinie dans Chainon::length
+	// return length();
+	return len;
 }
 
-void Chainon::print (std::ostream & os) {
+void Chainon::print (std::ostream & os) const {
 	os << data ;
+	// FAUTE : Déférencement d'un nullptr si next est nullptr
 	if (next != nullptr) {
 		os << ", ";
+	    next->print(os);
+
 	}
-	next->print(os);
 }
 
 // ******************  List
@@ -41,11 +48,14 @@ void List::push_back (const std::string& val) {
 	}
 }
 
-void List::push_front (const std::string& val) {
+void pr::List::push_front(const std::string& val) {
 	tete = new Chainon(val,tete);
 }
 
-bool empty() {
+// FAUTE: Définition de fonction hors de la classe sans opérateur de résolution de portée
+// bool empty() {
+bool List::empty() const{
+
 	return tete == nullptr;
 }
 
@@ -59,7 +69,7 @@ size_t List::size() const {
 
 } // namespace pr
 
-std::ostream & operator<< (std::ostream & os, const pr::List & vec)
+std::ostream & pr::operator<< (std::ostream & os, const pr::List & vec)
 {
 	os << "[";
 	if (vec.tete != nullptr) {
@@ -68,4 +78,3 @@ std::ostream & operator<< (std::ostream & os, const pr::List & vec)
 	os << "]";
 	return os;
 }
-
